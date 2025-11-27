@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth antialiased;
+  }
+
+  body {
+    @apply bg-white text-slate-900 transition-colors duration-300;
+    @apply dark:bg-slate-950 dark:text-slate-100;
+  }
+
+  ::selection {
+    @apply bg-brand-500/20 text-brand-600;
+    @apply dark:bg-brand-400/20 dark:text-brand-300;
+  }
+}
+
+@layer components {
+  .link-underline {
+    @apply relative;
+  }
+
+  .link-underline::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-[2px] bg-brand-500 transition-all duration-300;
+    @apply dark:bg-brand-400;
+  }
+
+  .link-underline:hover::after {
+    @apply w-full;
+  }
+
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-sm border border-slate-200/60 shadow-sm;
+    @apply dark:bg-slate-900/80 dark:border-slate-700/60;
+  }
+
+  .terminal-prompt {
+    @apply font-mono text-slate-500 dark:text-slate-400;
+  }
+
+  .cursor-blink {
+    @apply inline-block bg-green-500 dark:bg-green-400 animate-blink ml-1 align-middle rounded-sm;
+  }
+}
+
+/* Vue Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}

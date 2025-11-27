@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generate Images for cbarange.com</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      background: #0f172a;
+      color: #f1f5f9;
+      padding: 2rem;
+      margin: 0;
+    }
+    h1 { color: #3b82f6; margin-bottom: 2rem; }
+    h2 { color: #94a3b8; margin-top: 2rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .card {
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid #334155;
+    }
+    .card h3 { margin: 0 0 0.5rem; color: #f1f5f9; }
+    .card p { margin: 0 0 1rem; color: #94a3b8; font-size: 0.875rem; }
+    canvas {
+      display: block;
+      margin: 1rem auto;
+      border-radius: 8px;
+      max-width: 100%;
+      height: auto;
+    }
+    button {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      width: 100%;
+      transition: background 0.2s;
+    }
+    button:hover { background: #2563eb; }
+    .info {
+      background: #1e3a5f;
+      border: 1px solid #3b82f6;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+    }
+    .info code {
+      background: #0f172a;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <h1>Image Generator - cbarange.com</h1>
+
+  <div class="info">
+    <strong>Instructions:</strong> Clique sur chaque bouton pour télécharger l'image, puis place les fichiers dans le dossier <code>public/</code>
+  </div>
+
+  <h2>Open Graph Image (Social Media)</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>og-image.png</h3>
+      <p>1200 × 630 px - Pour Facebook, LinkedIn, Twitter</p>
+      <canvas id="og-canvas" width="1200" height="630"></canvas>
+      <button onclick="download('og-canvas', 'og-image.png')">Télécharger og-image.png</button>
+    </div>
+  </div>
+
+  <h2>Favicon</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>favicon-32.png</h3>
+      <p>32 × 32 px - Favicon standard</p>
+      <canvas id="favicon32-canvas" width="32" height="32" style="image-rendering: pixelated; width: 128px; height: 128px;"></canvas>
+      <button onclick="download('favicon32-canvas', 'favicon-32.png')">Télécharger favicon-32.png</button>
+    </div>
+    <div class="card">
+      <h3>favicon-16.png</h3>
+      <p>16 × 16 px - Favicon petit</p>
+      <canvas id="favicon16-canvas" width="16" height="16" style="image-rendering: pixelated; width: 128px; height: 128px;"></canvas>
+      <button onclick="download('favicon16-canvas', 'favicon-16.png')">Télécharger favicon-16.png</button>
+    </div>
+    <div class="card">
+      <h3>favicon.png</h3>
+      <p>48 × 48 px - Pour conversion en .ico</p>
+      <canvas id="favicon48-canvas" width="48" height="48" style="image-rendering: pixelated; width: 144px; height: 144px;"></canvas>
+      <button onclick="download('favicon48-canvas', 'favicon.png')">Télécharger favicon.png</button>
+      <p style="margin-top: 1rem; font-size: 0.75rem;">Convertis en .ico sur <a href="https://favicon.io/favicon-converter/" target="_blank" style="color: #3b82f6;">favicon.io</a></p>
+    </div>
+  </div>
+
+  <h2>App Icons (PWA & iOS)</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>apple-touch-icon.png</h3>
+      <p>180 × 180 px - Icône iOS home screen</p>
+      <canvas id="apple-canvas" width="180" height="180"></canvas>
+      <button onclick="download('apple-canvas', 'apple-touch-icon.png')">Télécharger apple-touch-icon.png</button>
+    </div>
+    <div class="card">
+      <h3>icon-192.png</h3>
+      <p>192 × 192 px - PWA icon</p>
+      <canvas id="icon192-canvas" width="192" height="192"></canvas>
+      <button onclick="download('icon192-canvas', 'icon-192.png')">Télécharger icon-192.png</button>
+    </div>
+    <div class="card">
+      <h3>icon-512.png</h3>
+      <p>512 × 512 px - PWA icon large</p>
+      <canvas id="icon512-canvas" width="512" height="512"></canvas>
+      <button onclick="download('icon512-canvas', 'icon-512.png')">Télécharger icon-512.png</button>
+    </div>
+  </div>
+
+  <script>
+    // Configuration
+    const CONFIG = {
+      name: 'Clement Baranger',
+      initials: 'CB',
+      title: 'Developer • Founder • Builder',
+      subtitle: 'Software Developer & DevOps Consultant',
+      bgColor: '#0f172a',
+      primaryColor: '#3b82f6',
+      accentColor: '#22d3ee',
+      textColor: '#f1f5f9',
+      subtextColor: '#94a3b8'
+    };
+
+    // Draw OG Image (1200x630)
+    function drawOGImage() {
+      const canvas = document.getElementById('og-canvas');
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+
+      // Background gradient
+      const gradient = ctx.createLinearGradient(0, 0, w, h);
+      gradient.addColorStop(0, CONFIG.bgColor);
+      gradient.addColorStop(1, '#1e293b');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, w, h);
+
+      // Decorative circles
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = CONFIG.primaryColor;
+      ctx.beginPath();
+      ctx.arc(w * 0.85, h * 0.2, 200, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(w * 0.1, h * 0.8, 150, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = CONFIG.accentColor;
+      ctx.beginPath();
+      ctx.arc(w * 0.9, h * 0.85, 100, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      // Left accent bar
+      ctx.fillStyle = CONFIG.primaryColor;
+      ctx.fillRect(0, 0, 8, h);
+
+      // Initials badge
+      const badgeSize = 100;
+      const badgeX = 80;
+      const badgeY = h / 2 - 80;
+
+      ctx.fillStyle = CONFIG.primaryColor;
+      ctx.beginPath();
+      ctx.roundRect(badgeX, badgeY, badgeSize, badgeSize, 20);
+      ctx.fill();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 48px "Space Grotesk", system-ui';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(CONFIG.initials, badgeX + badgeSize / 2, badgeY + badgeSize / 2);
+
+      // Name
+      ctx.fillStyle = CONFIG.textColor;
+      ctx.font = 'bold 72px "Space Grotesk", system-ui';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(CONFIG.name, 220, h / 2 - 50);
+
+      // Title
+      ctx.fillStyle = CONFIG.primaryColor;
+      ctx.font = '600 36px "Space Grotesk", system-ui';
+      ctx.fillText(CONFIG.title, 220, h / 2 + 20);
+
+      // Subtitle
+      ctx.fillStyle = CONFIG.subtextColor;
+      ctx.font = '400 28px "Space Grotesk", system-ui';
+      ctx.fillText(CONFIG.subtitle, 220, h / 2 + 70);
+
+      // URL
+      ctx.fillStyle = CONFIG.subtextColor;
+      ctx.font = '500 24px "Space Grotesk", system-ui';
+      ctx.textAlign = 'right';
+      ctx.fillText('cbarange.com', w - 60, h - 40);
+    }
+
+    // Draw Icon (square)
+    function drawIcon(canvasId, size) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+
+      // Background
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, CONFIG.primaryColor);
+      gradient.addColorStop(1, '#1d4ed8');
+      ctx.fillStyle = gradient;
+
+      // Rounded rectangle background
+      const radius = size * 0.2;
+      ctx.beginPath();
+      ctx.roundRect(0, 0, size, size, radius);
+      ctx.fill();
+
+      // Initials
+      ctx.fillStyle = '#ffffff';
+      ctx.font = `bold ${size * 0.45}px "Space Grotesk", system-ui`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(CONFIG.initials, size / 2, size / 2);
+    }
+
+    // Draw Favicon (small, optimized for tiny sizes)
+    function drawFavicon(canvasId, size) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+
+      // Solid background (gradient doesn't work well at small sizes)
+      ctx.fillStyle = CONFIG.primaryColor;
+
+      // Rounded rectangle background
+      const radius = size * 0.15;
+      ctx.beginPath();
+      ctx.roundRect(0, 0, size, size, radius);
+      ctx.fill();
+
+      // Initials - simplified for small sizes
+      ctx.fillStyle = '#ffffff';
+      ctx.font = `bold ${size * 0.55}px "Space Grotesk", system-ui`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(CONFIG.initials, size / 2, size / 2 + 1);
+    }
+
+    // Download function
+    function download(canvasId, filename) {
+      const canvas = document.getElementById(canvasId);
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // Initialize all canvases
+    function init() {
+      // Wait for font to load
+      document.fonts.ready.then(() => {
+        drawOGImage();
+        // Favicons
+        drawFavicon('favicon16-canvas', 16);
+        drawFavicon('favicon32-canvas', 32);
+        drawFavicon('favicon48-canvas', 48);
+        // App icons
+        drawIcon('apple-canvas', 180);
+        drawIcon('icon192-canvas', 192);
+        drawIcon('icon512-canvas', 512);
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>
