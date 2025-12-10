@@ -56,7 +56,7 @@ interface Props {
   icon: string
   title: string
   description: string
-  variant?: 'default' | 'github' | 'medium' | 'brand' | 'accent' | 'linkedin' | 'twitter' | 'malt'
+  variant?: 'default' | 'github' | 'medium' | 'brand' | 'accent' | 'linkedin' | 'twitter' | 'malt' | 'purple'
   size?: 'default' | 'lg'
 }
 
@@ -81,7 +81,8 @@ const glowClass = computed(() => {
     medium: 'bg-gradient-to-br from-slate-400 to-slate-600',
     linkedin: 'bg-gradient-to-br from-[#0A66C2] to-[#004182]',
     twitter: 'bg-gradient-to-br from-slate-400 to-slate-600',
-    malt: 'bg-gradient-to-br from-[#FC5656] to-[#e04545]'
+    malt: 'bg-gradient-to-br from-[#FC5656] to-[#e04545]',
+    purple: 'bg-gradient-to-br from-purple-400 to-purple-600'
   }
   return classes[props.variant]
 })
@@ -96,7 +97,8 @@ const titleHoverClass = computed(() => {
       medium: 'group-hover:text-slate-700 dark:group-hover:text-slate-200',
       linkedin: 'group-hover:text-[#0A66C2] dark:group-hover:text-[#4d9ae8]',
       twitter: 'group-hover:text-slate-700 dark:group-hover:text-slate-200',
-      malt: 'group-hover:text-[#FC5656] dark:group-hover:text-[#ff7a7a]'
+      malt: 'group-hover:text-[#FC5656] dark:group-hover:text-[#ff7a7a]',
+      purple: 'group-hover:text-purple-600 dark:group-hover:text-purple-400'
     }
     return classes[props.variant]
   }
@@ -107,13 +109,14 @@ const arrowClass = computed(() => {
   if (props.size === 'lg') {
     const classes: Record<string, string> = {
       default: 'text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300',
-      brand: 'text-brand-300 group-hover:text-brand-600 dark:text-brand-700 dark:group-hover:text-brand-400',
-      accent: 'text-accent-300 group-hover:text-accent-600 dark:text-accent-700 dark:group-hover:text-accent-400',
+      brand: 'text-brand-600 group-hover:text-brand-700 dark:text-brand-400 dark:group-hover:text-brand-300',
+      accent: 'text-accent-600 group-hover:text-accent-700 dark:text-accent-400 dark:group-hover:text-accent-300',
       github: 'text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300',
       medium: 'text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300',
       linkedin: 'text-[#0A66C2]/40 group-hover:text-[#0A66C2]',
       twitter: 'text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300',
-      malt: 'text-[#FC5656]/40 group-hover:text-[#FC5656]'
+      malt: 'text-[#FC5656]/40 group-hover:text-[#FC5656]',
+      purple: 'text-purple-600 group-hover:text-purple-700 dark:text-purple-400 dark:group-hover:text-purple-300'
     }
     return classes[props.variant]
   }
@@ -129,7 +132,8 @@ const iconBgClass = computed(() => {
     accent: 'bg-accent-100 dark:bg-accent-900/50 group-hover:bg-accent-200 dark:group-hover:bg-accent-800/50',
     linkedin: 'bg-[#0A66C2] group-hover:bg-[#004182]',
     twitter: 'bg-slate-900 dark:bg-slate-100 group-hover:bg-slate-800 dark:group-hover:bg-slate-200',
-    malt: 'bg-[#FC5656] group-hover:bg-[#e04545]'
+    malt: 'bg-[#FC5656] group-hover:bg-[#e04545]',
+    purple: 'bg-purple-100 dark:bg-purple-900/50 group-hover:bg-purple-200 dark:group-hover:bg-purple-800/50'
   }
   return classes[props.variant]
 })
@@ -143,7 +147,8 @@ const iconClass = computed(() => {
     accent: 'text-accent-600 dark:text-accent-400',
     linkedin: 'text-white',
     twitter: 'text-white dark:text-slate-900',
-    malt: 'text-white'
+    malt: 'text-white',
+    purple: 'text-purple-600 dark:text-purple-400'
   }
   return classes[props.variant]
 })

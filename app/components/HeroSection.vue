@@ -94,9 +94,10 @@
                 v-for="(link, index) in workLinks"
                 :key="link.href"
                 class="animate-slide-up opacity-0"
+                :class="{ 'sm:col-span-2 sm:flex sm:justify-center': index === 2 }"
                 :style="{ animationDelay: `${2.5 + index * 0.25}s`, animationDuration: '0.5s', animationFillMode: 'forwards' }"
               >
-                <div class="animate-gentle-shake h-full w-full" :style="{ animationDelay: `${index * 0.9}s` }">
+                <div class="animate-gentle-shake h-full" :class="index === 2 ? 'sm:w-1/2' : 'w-full'" :style="{ animationDelay: `${index * 0.9}s` }">
                   <LinkCard
                     :href="link.href"
                     :icon="link.icon"
@@ -242,6 +243,13 @@ const workLinks = [
     title: 'S3 Explorer',
     description: 'Best Bucket-type S3 UI tool',
     variant: 'accent' as const
+  },
+  {
+    href: 'https://s2tui.accessdevops.com/',
+    icon: 'heroicons:microphone-20-solid',
+    title: 'S2Tui',
+    description: 'Speech to Text, 100% offline & private',
+    variant: 'purple' as const
   }
 ]
 

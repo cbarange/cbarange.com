@@ -59,6 +59,13 @@ const workLinks = [
     title: 'S3 Explorer',
     description: 'Best Bucket-type S3 UI tool',
     variant: 'accent' as const
+  },
+  {
+    href: 'https://s2tui.accessdevops.com/',
+    icon: 'heroicons:microphone-20-solid',
+    title: 'S2Tui',
+    description: 'Speech to Text, 100% offline & private',
+    variant: 'accent' as const
   }
 ]
 

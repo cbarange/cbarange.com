@@ -54,7 +54,7 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {
           name: 'description',
-          content: 'Clement Baranger — Software Developer, Founder of AccessDevOps, Creator of S3 Explorer. DevOps Consultant & AI Enthusiast. Ideas are cheap, execution is everything.'
+          content: 'Clement Baranger — Software Developer, Founder of AccessDevOps, Creator of S3 Explorer & S2Tui. DevOps Consultant & AI Enthusiast. Ideas are cheap, execution is everything.'
         },
         { name: 'author', content: 'Clement Baranger' },
         { name: 'robots', content: 'index, follow' },
@@ -68,7 +68,7 @@ export default defineNuxtConfig({
         { property: 'og:title', content: 'Clement Baranger — Developer • Founder • Builder' },
         {
           property: 'og:description',
-          content: 'Software Developer, Founder of AccessDevOps, Creator of S3 Explorer. DevOps Consultant & AI Enthusiast.'
+          content: 'Software Developer, Founder of AccessDevOps, Creator of S3 Explorer & S2Tui. DevOps Consultant & AI Enthusiast.'
         },
         { property: 'og:image', content: 'https://cbarange.com/og-image.png' },
         { property: 'og:site_name', content: 'Clement Baranger' },
@@ -78,7 +78,7 @@ export default defineNuxtConfig({
         { name: 'twitter:title', content: 'Clement Baranger — Developer • Founder • Builder' },
         {
           name: 'twitter:description',
-          content: 'Software Developer, Founder of AccessDevOps, Creator of S3 Explorer. DevOps Consultant & AI Enthusiast.'
+          content: 'Software Developer, Founder of AccessDevOps, Creator of S3 Explorer & S2Tui. DevOps Consultant & AI Enthusiast.'
         },
         { name: 'twitter:image', content: 'https://cbarange.com/og-image.png' }
       ],
