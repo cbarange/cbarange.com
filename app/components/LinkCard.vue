@@ -3,7 +3,7 @@
     :href="href"
     target="_blank"
     rel="noopener noreferrer"
-    class="group relative flex items-center gap-4 transition-all duration-500 cursor-pointer"
+    class="group relative flex items-center gap-3 transition-all duration-500 cursor-pointer"
     :class="cardClasses"
   >
     <!-- Gradient glow effect for large cards -->
@@ -17,16 +17,16 @@
       class="flex items-center justify-center rounded-xl transition-all duration-300"
       :class="[
         iconBgClass,
-        size === 'lg' ? 'w-14 h-14' : 'w-12 h-12'
+        size === 'lg' ? 'w-12 h-12' : 'w-10 h-10'
       ]"
     >
-      <Icon :name="icon" :class="[iconClass, size === 'lg' ? 'w-7 h-7' : 'w-6 h-6']" />
+      <Icon :name="icon" :class="[iconClass, size === 'lg' ? 'w-6 h-6' : 'w-5 h-5']" />
     </div>
     <div class="flex-1 min-w-0">
       <h3
         class="font-bold text-slate-900 dark:text-white transition-colors"
         :class="[
-          size === 'lg' ? 'text-xl mb-0.5' : 'text-base',
+          size === 'lg' ? 'text-base mb-0.5' : 'text-sm',
           titleHoverClass
         ]"
       >
@@ -43,7 +43,7 @@
       name="heroicons:arrow-up-right-20-solid"
       class="transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
       :class="[
-        size === 'lg' ? 'w-6 h-6' : 'w-5 h-5',
+        size === 'lg' ? 'w-5 h-5' : 'w-4 h-4',
         arrowClass
       ]"
     />
@@ -67,7 +67,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const cardClasses = computed(() => {
   if (props.size === 'lg') {
-    return 'bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-6 hover:shadow-2xl border border-slate-200 dark:border-slate-700'
+    return 'bg-white dark:bg-slate-900 rounded-2xl p-3 sm:p-5 hover:shadow-2xl border border-slate-200 dark:border-slate-700'
   }
   return 'rounded-xl glass-card hover:shadow-md hover:border-brand-300 dark:hover:border-brand-600 p-4 hover:-translate-y-0.5'
 })

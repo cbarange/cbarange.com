@@ -37,7 +37,9 @@
     <!-- Output content - appears after terminal moves -->
     <div
       v-if="phase === 'complete'"
-      class="min-h-screen grid grid-rows-[auto_auto_auto_auto_auto] md:grid-rows-[0.4fr_1fr_0.4fr_1fr_0.2fr] md:h-screen px-4 sm:px-6 pt-6 pb-6 gap-8 md:gap-0"
+      ref="contentRef"
+      class="min-h-screen grid grid-rows-[auto_auto_auto_auto_auto] md:grid-rows-[0.25fr_1fr_0.25fr_0.9fr_0.1fr] md:h-screen px-6 sm:px-8 pt-8 pb-8 gap-10 md:gap-0"
+      :style="scaleStyle"
     >
       <!-- Section 1: Name and tagline -->
       <div class="flex items-center justify-center">
@@ -145,12 +147,12 @@
       </div>
 
       <!-- Section 4: More to explore -->
-      <div class="flex items-start justify-center pt-8">
+      <div class="flex items-start justify-center pt-10">
         <div class="max-w-4xl w-full">
-          <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4 animate-slide-up opacity-0" style="animation-delay: 3.7s; animation-duration: 0.5s; animation-fill-mode: forwards;">
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-6 animate-slide-up opacity-0" style="animation-delay: 3.7s; animation-duration: 0.5s; animation-fill-mode: forwards;">
             More to explore
           </h2>
-          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <div
               v-for="(link, index) in exploreLinks"
               :key="link.href"
@@ -188,6 +190,36 @@ const phase = ref<Phase>('centered')
 const typingSpeed = 100 // ms per character
 const terminalRef = ref<HTMLElement | null>(null)
 const transitionsEnabled = ref(false)
+
+// Scale-to-fit: ensures all content is visible on small-height viewports
+const contentRef = ref<HTMLElement | null>(null)
+const contentScale = ref(1)
+
+const scaleStyle = computed(() => {
+  if (contentScale.value >= 1) return {}
+  return {
+    transform: `scale(${contentScale.value})`,
+    transformOrigin: 'top center'
+  }
+})
+
+function updateScale() {
+  // Only apply on md+ where overflow-hidden clips content
+  if (!contentRef.value || window.innerWidth < 768) {
+    contentScale.value = 1
+    return
+  }
+  const el = contentRef.value
+  // Temporarily override md:h-screen so fr rows size to their content
+  el.style.height = 'auto'
+  const naturalH = el.scrollHeight
+  el.style.height = '' // restore md:h-screen from CSS class
+  contentScale.value = Math.min(1, window.innerHeight / naturalH)
+}
+
+watch(phase, (newPhase) => {
+  if (newPhase === 'complete') nextTick(updateScale)
+})
 
 // Rotating tagline
 const rotatingPhrases = [
@@ -381,7 +413,13 @@ const terminalStyle = computed(() => {
   }
 })
 
+onUnmounted(() => {
+  window.removeEventListener('resize', updateScale)
+})
+
 onMounted(() => {
+  window.addEventListener('resize', updateScale)
+
   // Enable transitions after initial render to prevent visual glitches
   nextTick(() => {
     transitionsEnabled.value = true
