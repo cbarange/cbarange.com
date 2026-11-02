@@ -29,16 +29,20 @@
             ></span>
           </div>
         </div>
-        <!-- Theme toggle on the same row -->
-        <ThemeToggle v-if="phase === 'complete'" class="animate-fade-in" />
+        <!-- Resume and theme toggle on the same row -->
+        <div v-if="phase === 'complete'" class="flex items-center gap-2 animate-fade-in">
+          <ResumeButton />
+          <ThemeToggle />
+        </div>
       </div>
     </div>
 
     <!-- Output content - appears after terminal moves -->
+    <!-- md height: viewport minus the terminal row (74px), so fr rows only share the visible area -->
     <div
       v-if="phase === 'complete'"
       ref="contentRef"
-      class="min-h-screen grid grid-rows-[auto_auto_auto_auto_auto] md:grid-rows-[0.25fr_1fr_0.25fr_0.9fr_0.1fr] md:h-screen px-6 sm:px-8 pt-8 pb-8 gap-10 md:gap-0"
+      class="min-h-screen md:min-h-0 md:h-[calc(100vh-74px)] grid grid-rows-[auto_auto_auto_auto_auto] md:grid-rows-[0.25fr_1fr_0.25fr_0.9fr_0.1fr] px-6 sm:px-8 pt-8 pb-8 gap-10 md:gap-0"
       :style="scaleStyle"
     >
       <!-- Section 1: Name and tagline -->
@@ -60,7 +64,8 @@
       </div>
 
       <!-- Section 2: Description + work cards (appears after rotating text types first phrase ~2.5s) -->
-      <div class="flex items-center justify-center">
+      <!-- md:pb-8 keeps a gap above the contact button when fr rows collapse to their content height -->
+      <div class="flex items-center justify-center md:pb-8">
         <div class="max-w-4xl w-full">
           <!-- Desktop: inline layout -->
           <p class="hidden md:block text-3xl md:text-4xl text-slate-600 dark:text-slate-400 animate-slide-up opacity-0" style="animation-delay: 1.5s; animation-duration: 0.8s; animation-fill-mode: forwards;">
@@ -210,11 +215,16 @@ function updateScale() {
     return
   }
   const el = contentRef.value
-  // Temporarily override md:h-screen so fr rows size to their content
+  // Temporarily override the md height and the fr rows so rows size to their content
+  // (with an auto height, fr rows inflate proportionally and overestimate it)
   el.style.height = 'auto'
+  el.style.gridTemplateRows = 'auto'
   const naturalH = el.scrollHeight
-  el.style.height = '' // restore md:h-screen from CSS class
-  contentScale.value = Math.min(1, window.innerHeight / naturalH)
+  el.style.height = '' // restore the md height from CSS class
+  el.style.gridTemplateRows = ''
+  // The terminal row sits above the content and takes part of the viewport
+  const availableH = window.innerHeight - el.offsetTop
+  contentScale.value = Math.min(1, availableH / naturalH)
 }
 
 watch(phase, (newPhase) => {

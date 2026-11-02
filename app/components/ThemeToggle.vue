@@ -1,7 +1,7 @@
 <template>
   <button
     @click="toggleColorMode"
-    class="relative p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition-all duration-300 group"
+    class="relative flex p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition-all duration-300 group"
     :aria-label="colorMode.preference === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
   >
     <Icon
@@ -15,6 +15,8 @@
 const colorMode = useColorMode()
 
 function toggleColorMode() {
+  // Tells the head script in nuxt.config.ts to keep this choice for the tab
+  window.sessionStorage?.setItem('theme-manual', '1')
   colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
 }
 </script>

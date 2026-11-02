@@ -39,8 +39,10 @@ export default defineNuxtConfig({
 
   colorMode: {
     classSuffix: '',
-    preference: 'dark',
-    fallback: 'dark'
+    preference: 'light',
+    fallback: 'light',
+    // The module rewrites its preference on every load: localStorage would freeze it
+    storage: 'sessionStorage'
   },
 
   app: {
@@ -83,6 +85,18 @@ export default defineNuxtConfig({
         { name: 'twitter:image', content: 'https://cbarange.com/og-image.png' }
       ],
       script: [
+        // Theme rule, runs before the color-mode script to avoid a flash: light,
+        // except dark system theme between 23:00 and 07:00 local time.
+        // A manual toggle wins for the rest of the tab session.
+        {
+          innerHTML: `try {
+  if (!sessionStorage.getItem('theme-manual')) {
+    var hour = new Date().getHours();
+    var systemDark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+    sessionStorage.setItem('nuxt-color-mode', (hour >= 23 || hour < 7) && systemDark ? 'dark' : 'light');
+  }
+} catch (e) {}`
+        },
         // Google Analytics (gtag.js)
         {
           src: 'https://www.googletagmanager.com/gtag/js?id=G-G1DXQH3Q8V',
