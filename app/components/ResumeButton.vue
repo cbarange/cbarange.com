@@ -58,7 +58,7 @@
           <div class="min-h-0 overflow-y-auto overscroll-contain bg-white">
             <!-- width/height reserve the page ratio while the image loads -->
             <img
-              src="/resume-preview.png"
+              src="/resume-preview.png?v=2026-11-04"
               width="1530"
               height="1980"
               alt="One-page resume of Clement Baranger, Lead DevSecOps. Download the PDF for the full text and links."
